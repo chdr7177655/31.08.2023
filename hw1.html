@@ -1,0 +1,93 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<title>Matrix</title>
+<style>
+    table {
+    border-collapse: collapse;
+    width: 100%;
+    }
+    th, td {
+    border: 1px solid black;
+    padding: 8px;
+    text-align: center;
+    }
+    input[type="number"] {
+    width: 50px;
+    text-align: center;
+    }
+    .error {
+    color: red;
+    font-weight: bold;
+    }
+    .found {
+    color: blue;
+    font-weight: bold;
+    }
+    </style>
+</head>
+<body>
+<h1>Matrix</h1>
+
+<table id="matrix"></table>
+<br>
+
+<input type="number" id="numberInput" placeholder="Enter a number between 1-100">
+<button onclick="searchNumber()">Show Cells</button>
+<button onclick="displayMatrix()">Display Matrix</button>
+
+<script>
+var matrix = [];
+var numbers = [];
+
+function createMatrix() {
+var table = document.getElementById("matrix");
+for (var i = 0; i < 10; i++) {
+var row = document.createElement("tr");
+matrix[i] = [];
+for (var j = 0; j < 10; j++) {
+var cell = document.createElement("td");
+cell.textContent = Math.floor(Math.random() * 100) + 1;
+row.appendChild(cell);
+matrix[i][j] = cell.textContent;
+numbers.push(cell.textContent);
+}
+table.appendChild(row);
+}
+}
+
+function searchNumber() {
+var numberInput = document.getElementById("numberInput");
+var number = parseInt(numberInput.value);
+var cells = document.getElementsByTagName("td");
+
+if (isNaN(number) || number < 1 || number > 100) {
+numberInput.classList.add("error");
+return;
+}
+numberInput.classList.remove("error");
+
+for (var i = 0; i < cells.length; i++) {
+var cellNumber = parseInt(cells[i].textContent);
+if (cellNumber === number) {
+cells[i].classList.add("found");
+} else {
+cells[i].classList.remove("found");
+}
+}
+}
+
+function displayMatrix() {
+var table = document.getElementById("matrix");
+table.innerHTML = "";
+createMatrix();
+}
+
+createMatrix();
+
+var numberInput = document.getElementById("numberInput");
+numberInput.addEventListener("input", searchNumber);
+</script>
+</body>
+</html>

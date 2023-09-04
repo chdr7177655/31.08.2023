@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   
+   
+    <title>Document</title>
+</head>
+
+<body>
+
+ 
+<input type="number" id="yearInput" placeholder="שנה">
+<button onclick="filterMovies()">פילטר</button>
+<input type="text" id="nameInput" placeholder="שם הסרט">
+<button onclick="addMovie()">הוסף סרט</button>
+<table id="moviesTable">
+  <tr>
+    <th>שם הסרט</th>
+    <th>שנת הסרט</th>
+    <th>שחקן ראשי</th>
+    <th>ז'אנר</th>
+  </tr>
+</table>
+<!--<img src="" id="movieImage" alt="תמונה של הסרט"> -->
+
+<script>
+
+
+
+
+let movies = [];
+
+function Movie(name, year, actor, genre, image) {
+  this.name = name;
+  this.year = year;
+  this.actor = actor;
+  this.genre = genre;
+  this.image = image;
+}
+
+function addMovie() {
+  const name = document.getElementById("nameInput").value;
+  const year = document.getElementById("yearInput").value;
+  const actor = prompt("שחקן ראשי:");
+  const genre = prompt("ז'אנר:");
+  const image = prompt("קישור לתמונה:");
+  const movie = new Movie(name, year, actor, genre, image);
+  movies.push(movie);
+  document.getElementById("nameInput").value = "";
+  document.getElementById("yearInput").value = "";
+  showMovies();
+}
+
+function filterMovies() {
+  const yearFilter = parseInt(document.getElementById("yearInput").value);
+  const filteredMovies = movies.filter(movie => movie.year > yearFilter);
+  showMovies(filteredMovies);
+}
+
+function showMovies(filteredMovies) {
+  const table = document.getElementById("moviesTable");
+  while (table.rows.length > 1) {
+    table.deleteRow(1);
+  }
+  if (filteredMovies) {
+    filteredMovies.forEach(movie => {
+      const row = table.insertRow();
+      const nameCell = row.insertCell();
+      const yearCell = row.insertCell();
+      const actorCell = row.insertCell();
+      const genreCell = row.insertCell();
+      nameCell.innerHTML = movie.name;
+      yearCell.innerHTML = movie.year;
+      actorCell.innerHTML = movie.actor;
+      genreCell.innerHTML = movie.genre;
+    });
+  } else {
+    movies.forEach(movie => {
+      const row = table.insertRow();
+      const nameCell = row.insertCell();
+      const yearCell = row.insertCell();
+      const actorCell = row.insertCell();
+      const genreCell = row.insertCell();
+      nameCell.innerHTML = movie.name;
+      yearCell.innerHTML = movie.year;
+      actorCell.innerHTML = movie.actor;
+      genreCell.innerHTML = movie.genre;
+    });
+  }
+}
+
+function showMovieImage(event) {
+  const selectedIndex = event.target.selectedIndex;
+  const selectedMovie = movies[selectedIndex];
+  const image = document.getElementById("movieImage");
+  image.src = selectedMovie.image;
+}
+
+document.getElementById("yearInput").addEventListener("input", filterMovies);
+document.getElementById("nameInput").addEventListener("input", filterMovies);
+document.getElementById("moviesTable").addEventListener("change", showMovieImage);
+</script>
+   
+</body>
+</html>
